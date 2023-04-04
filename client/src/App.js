@@ -63,7 +63,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body{
- font-family: 'Source Sans Pro', sans-serif;;
+    font-family: 'Inter', sans-serif;
   }
   a{
     text-decoration: none;
