@@ -1,7 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import Left from "../components/Left";
-import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { AiFillGoogleCircle } from "react-icons/ai";
 
 const Container = styled.div`
   width: 100%;
@@ -47,10 +48,6 @@ const Input = styled.input`
   border: none;
   background-color: #f3f0f0;
   padding: 0.5rem;
-
-  &:nth-child(2) {
-    margin-bottom: 1.7rem;
-  }
 `;
 
 const LoginBtn = styled.button`
@@ -64,30 +61,53 @@ const LoginBtn = styled.button`
 
 const SignDesc = styled.p`
   width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 1px;
+    background: black;
+  }
 `;
 
-function Home() {
-  const navigate = useNavigate();
+const Icons = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    font-size: 4rem;
+    padding: 10px;
+  }
+`;
 
-  const onSign = () => {
-    navigate("/sign");
-  };
-
+function Sign() {
   return (
     <>
       <Container>
         <Left />
         <Right>
           <RightWrap>
-            <SubTitle>Login</SubTitle>
-            <SubDesc>가입하신 이메일로 로그인하세요.</SubDesc>
+            <SubTitle>Welcome</SubTitle>
+            <SubDesc>회원가입을 완료해주세요.</SubDesc>
             <InputWrap>
+              <Input type="text" placeholder="이름"></Input>
+              <Input type="text" placeholder="이메일"></Input>
               <Input type="text" placeholder="아이디"></Input>
               <Input type="text" placeholder="비밀번호"></Input>
               <LoginBtn>로그인</LoginBtn>
-              <SignDesc onClick={onSign}>계정이 없으신가요? 회원가입</SignDesc>
+              <SignDesc>SNS계정 간편가입</SignDesc>
+              <Icons>
+                <RiKakaoTalkFill />
+                <AiFillGoogleCircle />
+              </Icons>
             </InputWrap>
           </RightWrap>
         </Right>
@@ -96,4 +116,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Sign;
