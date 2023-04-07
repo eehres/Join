@@ -34,7 +34,7 @@ const SubDesc = styled.p`
   margin-bottom: 2rem;
 `;
 
-const InputWrap = styled.div`
+const InputWrap = styled.form`
   width: 80%;
 `;
 

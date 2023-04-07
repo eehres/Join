@@ -1,8 +1,11 @@
+/* eslint-disable no-useless-escape */
+
 import React from "react";
 import Left from "../components/Left";
 import styled from "styled-components";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { AiFillGoogleCircle } from "react-icons/ai";
+import { useForm } from "react-hook-form";
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +38,7 @@ const SubDesc = styled.p`
   margin-bottom: 2rem;
 `;
 
-const InputWrap = styled.div`
+const InputWrap = styled.form`
   width: 80%;
 `;
 
@@ -48,6 +51,12 @@ const Input = styled.input`
   border: none;
   background-color: #f3f0f0;
   padding: 0.5rem;
+`;
+
+const Error = styled.p`
+  color: #ff5c5c;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
 `;
 
 const LoginBtn = styled.button`
@@ -89,6 +98,17 @@ const Icons = styled.div`
 `;
 
 function Sign() {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data, errors);
+  };
+
   return (
     <>
       <Container>
@@ -97,12 +117,95 @@ function Sign() {
           <RightWrap>
             <SubTitle>Welcome</SubTitle>
             <SubDesc>회원가입을 완료해주세요.</SubDesc>
-            <InputWrap>
-              <Input type="text" placeholder="이름"></Input>
-              <Input type="text" placeholder="이메일"></Input>
-              <Input type="text" placeholder="아이디"></Input>
-              <Input type="text" placeholder="비밀번호"></Input>
-              <LoginBtn>로그인</LoginBtn>
+            <InputWrap onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                id="name"
+                type="text"
+                placeholder="이름"
+                {...register("name", {
+                  required: "이름은 필수입력사항 입니다.",
+                })}
+              />
+              <Error>
+                {errors.name && (
+                  <small role="alert">{errors.name.message}</small>
+                )}
+              </Error>
+              <Input
+                id="email"
+                type="text"
+                placeholder="test@email.com"
+                {...register("email", {
+                  required: "이메일은 필수입력사항 입니다.",
+                  pattern: {
+                    value:
+                      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+                    message: "이메일 형식에 맞지 않습니다.",
+                  },
+                })}
+              />
+              <Error>
+                {errors.email && (
+                  <small role="alert">{errors.email.message}</small>
+                )}
+              </Error>
+              <Input
+                id="id"
+                name="id"
+                placeholder="아이디"
+                {...register("id", {
+                  required: "아이디는 필수입력사항 입니다.",
+                  minLength: {
+                    value: 5,
+                  },
+                })}
+              />
+              <Error>
+                {errors.id && <small role="alert">{errors.id.message}</small>}
+              </Error>
+              <Input
+                id="password"
+                type="password"
+                placeholder="비밀번호"
+                {...register("password", {
+                  required: "비밀번호는 필수 입력입니다.",
+                  minLength: {
+                    value: 7,
+                    message: "7자리 이상 비밀번호를 입력해주세요.",
+                  },
+                })}
+              />
+              <Error>
+                {errors.password && (
+                  <small role="alert">{errors.password.message}</small>
+                )}
+              </Error>
+              <Input
+                id="password"
+                type="password"
+                placeholder="*******"
+                {...register("passwordConfirm", {
+                  required: "비밀번호가 일치하지 않습니다.",
+                  minLength: {
+                    value: 7,
+                    message: "7자리 이상 비밀번호를 사용하세요.",
+                  },
+                  validate: {
+                    check: (val) => {
+                      if (getValues("password") !== val) {
+                        return "비밀번호가 일치하지 않습니다.";
+                      }
+                    },
+                  },
+                })}
+              />
+              <Error>
+                {errors.passwordConfirm && (
+                  <small role="alert">{errors.passwordConfirm.message}</small>
+                )}
+              </Error>
+
+              <LoginBtn type="submit">로그인</LoginBtn>
               <SignDesc>SNS계정 간편가입</SignDesc>
               <Icons>
                 <RiKakaoTalkFill />
