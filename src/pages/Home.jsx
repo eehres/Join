@@ -75,6 +75,10 @@ function Home() {
     navigate("/sign");
   };
 
+  const onLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <>
       <Container>
@@ -86,7 +90,7 @@ function Home() {
             <InputWrap>
               <Input type="text" placeholder="아이디"></Input>
               <Input type="text" placeholder="비밀번호"></Input>
-              <LoginBtn>로그인</LoginBtn>
+              <LoginBtn onClick={onLogin}>로그인</LoginBtn>
               <SignDesc onClick={onSign}>계정이 없으신가요? 회원가입</SignDesc>
             </InputWrap>
           </RightWrap>
