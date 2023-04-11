@@ -32,11 +32,10 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build
       working-directory: ${{ env.working-directory }}
-    # 디렉토리 생성
+
     - name: Make Directory
       run: mkdir -p deploy
         
-    # Jar 파일 복사
     - name: Copy Jar
       run: cp ./build/libs/*.jar ./deploy
 
