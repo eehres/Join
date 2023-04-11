@@ -68,5 +68,5 @@ jobs:
         --application-name join \
         --deployment-group-name join-group \
         --file-exists-behavior OVERWRITE \
-        --s3-location bucket=join-deploy,bundleType=zip,key=join.zip \ 
+        --s3-location bucket=join-deploy,bundleType=zip,key=join.zip \
         --region ap-northeast-2
