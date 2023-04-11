@@ -34,13 +34,13 @@ jobs:
       working-directory: ${{ env.working-directory }}
 
     - name: Make Directory
-      run: mkdir -p server
+      run: mkdir -p deploy
         
     - name: Copy Jar
-      run: cp ./build/libs/*.jar ./server
+      run: cp server/./build/libs/*.jar ./deploy
 
     - name: Make zip file
-      run: zip -r ./join.zip ./server
+      run: zip -r ./join.zip ./deploy
       shell: bash
 
     - name: Configure AWS credentials
