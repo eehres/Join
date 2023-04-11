@@ -38,10 +38,9 @@ jobs:
         
     - name: Copy Jar
       run: cp ./build/libs/*.jar ./deploy
-      working-directory: ${{ env.working-directory }}
 
     - name: Make zip file
-      run: zip -r ./coinTalk.zip ./deploy
+      run: zip -r ./join.zip ./deploy
       shell: bash
 
     - name: Configure AWS credentials
