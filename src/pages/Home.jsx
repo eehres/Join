@@ -1,12 +1,16 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import Left from "../components/Left";
 import { useNavigate } from "react-router-dom";
+import media from "../theme";
 
 const Container = styled.div`
-  width: 100%;
   height: 100vh;
   display: flex;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    flex-direction: column;
+  }
 `;
 
 const Right = styled.div`
@@ -15,6 +19,11 @@ const Right = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 100%;
+    padding: 5rem;
+  }
 `;
 
 const RightWrap = styled.div`
@@ -23,6 +32,10 @@ const RightWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    width: 80%;
+  }
 `;
 
 const SubTitle = styled.h2`
@@ -81,21 +94,25 @@ function Home() {
 
   return (
     <>
-      <Container>
-        <Left />
-        <Right>
-          <RightWrap>
-            <SubTitle>Login</SubTitle>
-            <SubDesc>가입하신 이메일로 로그인하세요.</SubDesc>
-            <InputWrap>
-              <Input type="text" placeholder="아이디"></Input>
-              <Input type="text" placeholder="비밀번호"></Input>
-              <LoginBtn onClick={onLogin}>로그인</LoginBtn>
-              <SignDesc onClick={onSign}>계정이 없으신가요? 회원가입</SignDesc>
-            </InputWrap>
-          </RightWrap>
-        </Right>
-      </Container>
+      <ThemeProvider theme={{ ...media }}>
+        <Container>
+          <Left />
+          <Right>
+            <RightWrap>
+              <SubTitle>Login</SubTitle>
+              <SubDesc>가입하신 이메일로 로그인하세요.</SubDesc>
+              <InputWrap>
+                <Input type="text" placeholder="아이디"></Input>
+                <Input type="text" placeholder="비밀번호"></Input>
+                <LoginBtn onClick={onLogin}>로그인</LoginBtn>
+                <SignDesc onClick={onSign}>
+                  계정이 없으신가요? 회원가입
+                </SignDesc>
+              </InputWrap>
+            </RightWrap>
+          </Right>
+        </Container>
+      </ThemeProvider>
     </>
   );
 }
