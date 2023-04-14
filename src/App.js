@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Sign from "./pages/Sign";
 import { createGlobalStyle } from "styled-components";
-import Login from "./pages/Login";
+import Welcome from "./pages/Welcome";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -79,7 +79,7 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="/sign" element={<Sign />} />
       </Routes>
     </BrowserRouter>

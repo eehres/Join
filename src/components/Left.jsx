@@ -21,28 +21,29 @@ const Image = styled.img`
   position: relative;
 
   @media ${({ theme }) => theme.device.tablet} {
+    height: 80vh;
     text-align: center;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
+    height: 75vh;
     text-align: center;
   }
 `;
 
 const LeftInfo = styled.div`
-  width: 40%;
   display: flex;
   flex-direction: column;
   position: absolute;
   color: white;
+  padding: 5rem;
 
   @media ${({ theme }) => theme.device.tablet} {
-    width: 75%;
     text-align: center;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    width: 80%;
+    padding: 2.5rem;
     text-align: center;
   }
 `;
@@ -52,11 +53,11 @@ const Title = styled.h1`
   margin-bottom: 1rem;
 
   @media ${({ theme }) => theme.device.tablet} {
-    font-size: 6rem;
+    font-size: 4.5rem;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 `;
 
@@ -64,12 +65,12 @@ const Desc = styled.p`
   line-height: 1.4;
 
   @media ${({ theme }) => theme.device.tablet} {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     line-height: 1.8;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     line-height: 1.6;
   }
 `;

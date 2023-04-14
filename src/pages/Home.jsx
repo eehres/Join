@@ -24,10 +24,14 @@ const Right = styled.div`
     width: 100%;
     padding: 5rem;
   }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    padding: 2rem;
+  }
 `;
 
 const RightWrap = styled.div`
-  width: 60%;
+  width: 65%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,15 +40,36 @@ const RightWrap = styled.div`
   @media ${({ theme }) => theme.device.tablet} {
     width: 80%;
   }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    width: 90%;
+  }
 `;
 
 const SubTitle = styled.h2`
   font-size: 3rem;
   margin-bottom: 1rem;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    font-size: 3.5rem;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    font-size: 1.8rem;
+  }
 `;
 
 const SubDesc = styled.p`
   margin-bottom: 2rem;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    font-size: 1.2rem;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const InputWrap = styled.form`
@@ -64,6 +89,10 @@ const Input = styled.input`
   &:nth-child(2) {
     margin-bottom: 1.7rem;
   }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    font-size: 0.5rem;
+  }
 `;
 
 const LoginBtn = styled.button`
@@ -73,12 +102,24 @@ const LoginBtn = styled.button`
   margin-bottom: 2rem;
   cursor: pointer;
   background-color: #f3f0f0;
+
+  @media ${({ theme }) => theme.device.mobile} {
+    font-size: 0.5rem;
+  }
 `;
 
 const SignDesc = styled.p`
   width: 100%;
   text-align: center;
   cursor: pointer;
+
+  @media ${({ theme }) => theme.device.tablet} {
+    font-size: 1.2rem;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    font-size: 0.8rem;
+  }
 `;
 
 function Home() {
