@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Left from "../components/Left";
 import { useNavigate } from "react-router-dom";
@@ -132,6 +132,12 @@ function Home() {
   const onLogin = () => {
     navigate("/login");
   };
+
+  useEffect(() => {
+    fetch("https://76ecdeb2-4fdd-4b73-b72a-1a3caa0ceb95.mock.pstmn.io/users")
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
