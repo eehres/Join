@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/api/*").permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/", "/users/login").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/*").permitAll()
                 );
 
         return http.build();
