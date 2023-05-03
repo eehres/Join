@@ -56,8 +56,8 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.GET, "/api/*").permitAll()
                         .antMatchers(HttpMethod.POST, "/api/*").permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/*").permitAll()
                 );
 
         return http.build();
