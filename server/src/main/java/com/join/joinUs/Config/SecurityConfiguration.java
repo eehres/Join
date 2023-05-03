@@ -58,6 +58,7 @@ public class SecurityConfiguration {
                 .authorizeRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/api/*").permitAll()
                         .antMatchers(HttpMethod.GET, "/api/*").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/api/*").permitAll()
                 );
 
         return http.build();
