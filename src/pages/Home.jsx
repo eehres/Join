@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Left from "../components/Left";
 import { useNavigate } from "react-router-dom";
 import media from "../theme";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Container = styled.div`
   height: 100vh;
@@ -95,6 +96,12 @@ const Input = styled.input`
   }
 `;
 
+const Error = styled.p`
+  color: #ff5c5c;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+`;
+
 const LoginBtn = styled.button`
   width: 100%;
   height: 5vh;
@@ -123,21 +130,86 @@ const SignDesc = styled.p`
 `;
 
 function Home() {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data, errors);
+  };
+
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
   const onSign = () => {
     navigate("/sign");
   };
 
-  const onLogin = () => {
-    navigate("/login");
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+    console.log(name, value);
   };
 
-  useEffect(() => {
-    fetch("https://76ecdeb2-4fdd-4b73-b72a-1a3caa0ceb95.mock.pstmn.io/users")
-      .then((res) => console.log(res))
+  // async function Login(e) {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await fetch(
+  //       "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/api/login",
+  //       {
+  //         method: "post",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           email: inputValue.email,
+  //           password: inputValue.password,
+  //         }),
+  //       }
+  //     );
+  //     if (res.ok) {
+  //       navigate("/welcome");
+  //     } else {
+  //       throw new Error(`${res.status}`);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  function Login(e) {
+    e.preventDefault();
+    fetch(
+      "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/users/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application.json",
+        },
+        body: JSON.stringify({
+          email: inputValue.email,
+          password: inputValue.password,
+        }),
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          console.log(res);
+          navigate("/welcome");
+        }
+      })
       .catch((err) => console.log(err));
-  }, []);
+  }
 
   return (
     <>
@@ -148,10 +220,52 @@ function Home() {
             <RightWrap>
               <SubTitle>Login</SubTitle>
               <SubDesc>가입하신 이메일로 로그인하세요.</SubDesc>
-              <InputWrap>
-                <Input type="text" placeholder="아이디"></Input>
-                <Input type="text" placeholder="비밀번호"></Input>
-                <LoginBtn onClick={onLogin}>로그인</LoginBtn>
+              <InputWrap onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                  id="email"
+                  type="text"
+                  placeholder="이메일"
+                  onChange={handleInput}
+                  {...register("email", {
+                    required: "이메일은 필수입력사항 입니다.",
+                    pattern: {
+                      value:
+                        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+                      message: "이메일 형식에 맞지 않습니다.",
+                    },
+                  })}
+                ></Input>
+                <Error>
+                  {errors.email && (
+                    <small role="alert">{errors.email.message}</small>
+                  )}
+                </Error>
+                <Input
+                  type="password"
+                  placeholder="비밀번호"
+                  onChange={handleInput}
+                  id="password"
+                  {...register("password", {
+                    required: "비밀번호는 필수 입력입니다.",
+                    minLength: {
+                      value: 7,
+                      message: "7자리 이상 비밀번호를 입력해주세요.",
+                    },
+                    validate: {
+                      check: (val) => {
+                        if (getValues("password") !== val) {
+                          return "비밀번호가 일치하지 않습니다.";
+                        }
+                      },
+                    },
+                  })}
+                ></Input>
+                <Error>
+                  {errors.password && (
+                    <small role="alert">{errors.password.message}</small>
+                  )}
+                </Error>
+                <LoginBtn onClick={Login}>로그인</LoginBtn>
                 <SignDesc onClick={onSign}>
                   계정이 없으신가요? 회원가입
                 </SignDesc>
