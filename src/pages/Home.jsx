@@ -138,7 +138,8 @@ function Home() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data, errors);
+    console.log(data);
+    navigate("/welcome");
   };
 
   const [inputValue, setInputValue] = useState({
@@ -158,43 +159,18 @@ function Home() {
       ...inputValue,
       [name]: value,
     });
-    console.log(name, value);
   };
 
-  // async function Login(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await fetch(
-  //       "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/api/login",
-  //       {
-  //         method: "post",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           email: inputValue.email,
-  //           password: inputValue.password,
-  //         }),
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       navigate("/welcome");
-  //     } else {
-  //       throw new Error(`${res.status}`);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  //https://3e4019be-8c98-497a-897e-b85d8d181f34.mock.pstmn.io/users/login
 
   function Login(e) {
     e.preventDefault();
     fetch(
-      "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/users/login",
+      "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/api/login",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application.json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: inputValue.email,
@@ -202,10 +178,15 @@ function Home() {
         }),
       }
     )
-      .then((res) => {
-        if (res.ok) {
-          console.log(res);
-          navigate("/welcome");
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log(response.json());
+      })
+      .then((response) => {
+        if (response.MESSAGE === "SUCCESS") {
+          alert("로그인 성공!");
         }
       })
       .catch((err) => console.log(err));
@@ -222,6 +203,7 @@ function Home() {
               <SubDesc>가입하신 이메일로 로그인하세요.</SubDesc>
               <InputWrap onSubmit={handleSubmit(onSubmit)}>
                 <Input
+                  name="email"
                   id="email"
                   type="text"
                   placeholder="이메일"
@@ -241,6 +223,7 @@ function Home() {
                   )}
                 </Error>
                 <Input
+                  name="password"
                   type="password"
                   placeholder="비밀번호"
                   onChange={handleInput}
@@ -265,7 +248,7 @@ function Home() {
                     <small role="alert">{errors.password.message}</small>
                   )}
                 </Error>
-                <LoginBtn onClick={Login}>로그인</LoginBtn>
+                <LoginBtn onSubmit={Login}>로그인</LoginBtn>
                 <SignDesc onClick={onSign}>
                   계정이 없으신가요? 회원가입
                 </SignDesc>

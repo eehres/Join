@@ -178,7 +178,7 @@ function Sign() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data, errors);
   };
 
@@ -255,8 +255,8 @@ function Sign() {
                   )}
                 </Error>
                 <Input
-                  id="password"
-                  type="password"
+                  id="passwordcheck"
+                  type="passwordcheck"
                   placeholder="*******"
                   {...register("passwordConfirm", {
                     required: "비밀번호가 일치하지 않습니다.",
@@ -279,7 +279,9 @@ function Sign() {
                   )}
                 </Error>
 
-                <LoginBtn type="submit">로그인</LoginBtn>
+                <LoginBtn type="submit" onSubmit={onSubmit}>
+                  로그인
+                </LoginBtn>
                 <SignDesc>SNS계정 간편가입</SignDesc>
                 <Icons>
                   <RiKakaoTalkFill />
