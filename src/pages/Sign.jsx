@@ -1,12 +1,12 @@
 /* eslint-disable no-useless-escape */
 
-import React from "react";
 import Left from "../components/Left";
 import styled, { ThemeProvider } from "styled-components";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import theme from "../theme";
+import { useState } from "react";
 
 const Container = styled.div`
   width: 100%;
@@ -178,9 +178,59 @@ function Sign() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log(data, errors);
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const handeleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
   };
+
+  // const onSubmit = async (data) => {
+  //   console.log(data, errors);
+  // };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+  };
+
+  function SignIn(e) {
+    e.preventDefault();
+    fetch(
+      "https://3e4019be-8c98-497a-897e-b85d8d181f34.mock.pstmn.io/users/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: inputValue.name,
+          email: inputValue.email,
+          phone: inputValue.phone,
+          password: inputValue.password,
+        }),
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log(response.json());
+      })
+      .then((response) => {
+        if (response.MESSAGE === "SUCCESS") {
+          alert("로그인 성공!");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <>
@@ -193,6 +243,7 @@ function Sign() {
               <SubDesc>회원가입을 완료해주세요.</SubDesc>
               <InputWrap onSubmit={handleSubmit(onSubmit)}>
                 <Input
+                  onChange={handeleInput}
                   id="name"
                   type="text"
                   placeholder="이름"
@@ -206,6 +257,7 @@ function Sign() {
                   )}
                 </Error>
                 <Input
+                  onChange={handeleInput}
                   id="email"
                   type="text"
                   placeholder="test@email.com"
@@ -224,13 +276,14 @@ function Sign() {
                   )}
                 </Error>
                 <Input
-                  id="id"
-                  name="id"
-                  placeholder="아이디"
-                  {...register("id", {
-                    required: "아이디는 필수입력사항 입니다.",
+                  onChange={handeleInput}
+                  id="phone"
+                  name="phone"
+                  placeholder="핸드폰번호"
+                  {...register("phone", {
+                    required: "핸드폰번호는 필수입력사항 입니다.",
                     minLength: {
-                      value: 5,
+                      value: 10,
                     },
                   })}
                 />
@@ -238,6 +291,7 @@ function Sign() {
                   {errors.id && <small role="alert">{errors.id.message}</small>}
                 </Error>
                 <Input
+                  onChange={handeleInput}
                   id="password"
                   type="password"
                   placeholder="비밀번호"
@@ -255,8 +309,9 @@ function Sign() {
                   )}
                 </Error>
                 <Input
+                  onChange={handeleInput}
                   id="passwordcheck"
-                  type="passwordcheck"
+                  type="password"
                   placeholder="*******"
                   {...register("passwordConfirm", {
                     required: "비밀번호가 일치하지 않습니다.",
@@ -279,7 +334,7 @@ function Sign() {
                   )}
                 </Error>
 
-                <LoginBtn type="submit" onSubmit={onSubmit}>
+                <LoginBtn type="submit" onClick={SignIn}>
                   로그인
                 </LoginBtn>
                 <SignDesc>SNS계정 간편가입</SignDesc>
