@@ -2,7 +2,6 @@ import styled, { ThemeProvider } from "styled-components";
 import Left from "../components/Left";
 import { useNavigate } from "react-router-dom";
 import media from "../theme";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const Container = styled.div`
@@ -133,19 +132,13 @@ function Home() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/welcome");
-  };
-
-  const [inputValue, setInputValue] = useState({
-    email: "",
-    password: "",
-  });
+  // const [inputValue, setInputValue] = useState({
+  //   email: "",
+  //   password: "",
+  // });
 
   const navigate = useNavigate();
 
@@ -153,44 +146,35 @@ function Home() {
     navigate("/sign");
   };
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
-  };
+  // const handleInput = (e) => {
+  //   const { name, value } = e.target;
+  //   setInputValue({
+  //     ...inputValue,
+  //     [name]: value,
+  //   });
+  // };
 
   //https://3e4019be-8c98-497a-897e-b85d8d181f34.mock.pstmn.io/users/login
 
-  function Login(e) {
-    e.preventDefault();
+  const onSubmit = (data) => {
     fetch(
-      "http://ec2-13-125-213-66.ap-northeast-2.compute.amazonaws.com:8080/api/login",
+      "https://3e4019be-8c98-497a-897e-b85d8d181f34.mock.pstmn.io/users/login",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: inputValue.email,
-          password: inputValue.password,
-        }),
+        body: JSON.stringify(data),
       }
     )
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        console.log(response.json());
-      })
-      .then((response) => {
-        if (response.MESSAGE === "SUCCESS") {
-          alert("로그인 성공!");
+        if (response.ok) {
+          navigate("/welcome");
+          console.log(response);
         }
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   return (
     <>
@@ -204,51 +188,33 @@ function Home() {
               <InputWrap onSubmit={handleSubmit(onSubmit)}>
                 <Input
                   name="email"
-                  id="email"
-                  type="text"
                   placeholder="이메일"
-                  onChange={handleInput}
                   {...register("email", {
-                    required: "이메일은 필수입력사항 입니다.",
+                    required: "이메일을 입력해주세요.",
                     pattern: {
                       value:
                         /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
                       message: "이메일 형식에 맞지 않습니다.",
                     },
                   })}
-                ></Input>
-                <Error>
-                  {errors.email && (
-                    <small role="alert">{errors.email.message}</small>
-                  )}
-                </Error>
+                />
+                <Error>{errors.email && <p>{errors.email.message}</p>}</Error>
                 <Input
-                  name="password"
                   type="password"
+                  name="password"
                   placeholder="비밀번호"
-                  onChange={handleInput}
-                  id="password"
                   {...register("password", {
-                    required: "비밀번호는 필수 입력입니다.",
+                    required: "비밀번호를 입력해주세요.",
                     minLength: {
-                      value: 7,
-                      message: "7자리 이상 비밀번호를 입력해주세요.",
-                    },
-                    validate: {
-                      check: (val) => {
-                        if (getValues("password") !== val) {
-                          return "비밀번호가 일치하지 않습니다.";
-                        }
-                      },
+                      value: 6,
+                      message: "최소 6자 이상의 비밀번호를 입력해주세요.",
                     },
                   })}
-                ></Input>
+                />
                 <Error>
-                  {errors.password && (
-                    <small role="alert">{errors.password.message}</small>
-                  )}
+                  {errors.password && <p>{errors.password.message}</p>}
                 </Error>
-                <LoginBtn onSubmit={Login}>로그인</LoginBtn>
+                <LoginBtn>로그인</LoginBtn>
                 <SignDesc onClick={onSign}>
                   계정이 없으신가요? 회원가입
                 </SignDesc>
